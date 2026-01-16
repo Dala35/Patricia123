@@ -1,0 +1,48 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "conteudo"
+    label: "Gerir Site"
+    files:
+      - name: "dados"
+        label: "Editar Todo o Conteúdo"
+        file: "content/data.json"
+        fields:
+          - {label: "WhatsApp Principal", name: "whatsapp_global", widget: "string"}
+          
+          - label: "Políticas e Pagamentos"
+            name: "configs_gerais"
+            widget: "object"
+            fields:
+              - {label: "Texto Cancelamento", name: "politicas.cancelamento", widget: "text"}
+              - {label: "IBAN", name: "pagamentos.iban", widget: "string"}
+              - {label: "Ref. Multicaixa", name: "pagamentos.multicaixa", widget: "string"}
+
+          - label: "Preços Maquiagem"
+            name: "precos_make"
+            widget: "object"
+            fields:
+              - {label: "Preço Cidade", name: "cidade", widget: "string"}
+              - {label: "Preço Zonas", name: "zonas", widget: "string"}
+
+          - label: "Produtos"
+            name: "produtos"
+            widget: "list"
+            fields:
+              - {label: "Nome", name: "titulo", widget: "string"}
+              - {label: "Descrição", name: "descricao", widget: "text"}
+              - {label: "Preço", name: "preco", widget: "string"}
+              - {label: "Imagem", name: "imagem", widget: "image"}
+
+          - label: "Serviços"
+            name: "servicos"
+            widget: "list"
+            fields:
+              - {label: "Nome", name: "titulo", widget: "string"}
+              - {label: "Descrição", name: "descricao", widget: "text"}
+              - {label: "Imagem", name: "imagem", widget: "image"}

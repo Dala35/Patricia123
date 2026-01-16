@@ -1,0 +1,417 @@
+<!DOCTYPE html> 
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patrícia Pattas – Vendas e Serviços</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <style>
+    :root {
+      --roxo: #6a0dad;
+      --lilas: #d8b4f8;
+      --amarelo: #f9dc5c;
+      --fundo: #f4f1fa;
+      --texto: #2e2e2e;
+      --menu-bg: #ffffff;
+      --wa-green: #25D366;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--fundo); color: var(--texto); line-height: 1.6; overflow-x: hidden; }
+
+    /* --- HEADER & NAV --- */
+    header { background: linear-gradient(135deg, var(--roxo), #4b087a); color: #fff; padding: 56px 16px 44px; text-align: center; position: relative; overflow: hidden; }
+    header::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.12), transparent 60%); pointer-events: none; }
+    header h1 { font-size: clamp(2.2rem, 4vw, 3rem); margin: 0 0 12px; }
+    header p { font-size: 1.05rem; opacity: 0.95; max-width: 520px; margin: 0 auto; }
+
+    nav { background: var(--lilas); display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; padding: 14px 12px; position: sticky; top: 0; z-index: 900; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    nav a { color: var(--roxo); font-weight: 600; text-decoration: none; padding: 4px 0; }
+    nav a:hover { text-decoration: underline; }
+
+    section { padding: 24px 16px; max-width: 1200px; margin: auto; }
+    h2 { color: var(--roxo); text-align: center; margin-bottom: 24px; border-bottom: 2px solid var(--lilas); display: inline-block; padding-bottom: 5px; }
+
+    /* --- MENU LATERAL (DRAWER) --- */
+    .menu-btn { position: fixed; top: 20px; right: 20px; z-index: 1001; background: var(--amarelo); border: none; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--roxo); transition: transform 0.2s; }
+    .menu-btn:hover { transform: scale(1.1); }
+
+    .side-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: var(--menu-bg); box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1000; padding: 80px 20px 20px; transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1); overflow-y: auto; }
+    .side-drawer.open { right: 0; }
+    
+    .drawer-section { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+    .drawer-section h3 { color: var(--roxo); font-size: 1.2rem; margin-bottom: 10px; }
+    .payment-box { background: var(--fundo); padding: 10px; border-radius: 8px; margin-top: 5px; font-family: monospace; color: var(--roxo); font-weight: bold; word-break: break-all; }
+    
+    .overlay-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+    .overlay-backdrop.active { opacity: 1; visibility: visible; }
+
+    /* --- CARDS & GRID --- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .card { background: #fff; padding: 20px; border-radius: 14px; box-shadow: 0 10px 28px rgba(106,13,173,0.14); text-align: center; transition: transform 0.3s; display: flex; flex-direction: column; }
+    .card:hover { transform: translateY(-6px); }
+    
+    /* --- IMAGEM VERTICAL (CORREÇÃO PEDIDA) --- */
+    .card img { 
+      width: 100%; 
+      height: 450px; /* Altura fixa maior para forçar vertical */
+      object-fit: cover; /* Garante que a imagem preenche sem distorcer */
+      border-radius: 12px; 
+      margin-bottom: 12px; 
+      background-color: #eee; /* Cor de fundo enquanto carrega */
+    }
+    
+    .btn { display: inline-block; background: var(--amarelo); color: var(--roxo); padding: 10px 18px; border-radius: 8px; font-weight: bold; text-decoration: none; margin-top: auto; transition: 0.2s; cursor: pointer; border: none; font-size: 1rem; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+    /* --- AGENDAMENTO FORM --- */
+    input, select { width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc; font-family: inherit; }
+    .price-display { font-weight: bold; color: var(--roxo); margin-bottom: 10px; display: block; }
+
+    /* --- WHATSAPP FLUTUANTE --- */
+    .wa-float { position: fixed; bottom: 20px; left: 20px; background: var(--wa-green); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1002; transition: transform 0.3s ease; }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 35px; height: 35px; fill: white; }
+
+    /* --- CHATBOT --- */
+    .chatbot-toggle { position: fixed; bottom: 20px; right: 20px; background: var(--roxo); color: white; padding: 12px 20px; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 1002; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+    .chatbot-container { position: fixed; bottom: 80px; right: 20px; width: 320px; max-height: 450px; background: white; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 1002; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(20px); transition: all 0.3s ease; }
+    .chatbot-container.active { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .chat-header { background: var(--roxo); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+    .chat-body { padding: 15px; overflow-y: auto; height: 300px; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+    .message { max-width: 80%; padding: 10px; border-radius: 10px; font-size: 0.9rem; line-height: 1.4; }
+    .bot-msg { background: #e9e9e9; align-self: flex-start; border-bottom-left-radius: 0; }
+    .user-msg { background: var(--lilas); color: var(--roxo); align-self: flex-end; border-bottom-right-radius: 0; font-weight: 500; }
+    .chat-options { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+    .chat-opt-btn { background: white; border: 1px solid var(--roxo); color: var(--roxo); padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+    .chat-opt-btn:hover { background: var(--roxo); color: white; }
+
+    footer { background: var(--roxo); color: white; text-align: center; padding: 16px; margin-top: 40px; }
+    .loading { text-align: center; padding: 20px; font-style: italic; color: #666; }
+    
+    /* Utilitário para quebras de linha no texto vindo do JSON */
+    .card p { white-space: pre-line; }
+
+    @media (max-width: 480px) {
+      header h1 { font-size: 1.8rem; }
+      .chatbot-container { width: 90%; right: 5%; left: 5%; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Menu Hambúrguer -->
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <div class="overlay-backdrop" id="backdrop" onclick="toggleMenu()"></div>
+
+  <!-- Gaveta Lateral (Informações Dinâmicas) -->
+  <div class="side-drawer" id="sideDrawer">
+    <div class="drawer-section">
+      <h3>Políticas da Agenda</h3>
+      <p id="txt-politicas">Carregando...</p>
+    </div>
+    <div class="drawer-section">
+      <h3>Formas de Pagamento</h3>
+      <p><strong>Multicaixa Express:</strong></p>
+      <div class="payment-box" id="txt-mcx">...</div>
+      <br>
+      <p><strong>Transferência (IBAN):</strong></p>
+      <div class="payment-box" id="txt-iban">...</div>
+    </div>
+  </div>
+
+  <!-- WhatsApp Flutuante -->
+  <a href="#" id="wa-float-btn" class="wa-float" target="_blank" title="Falar no WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.654-.698c.991.554 2.15.847 3.353.847h.005c3.181 0 5.768-2.586 5.768-5.766.001-1.541-.6-2.99-1.686-4.075-1.088-1.086-2.536-1.686-4.076-1.687l-1.558-.272zm0-2.172c4.376 0 7.937 3.562 7.938 7.939.001 2.12-.822 4.113-2.32 5.612-1.5 1.498-3.494 2.323-5.618 2.323h-.006c-1.334 0-2.65-.336-3.805-.972l-4.22 1.109 1.127-4.109c-.694-1.203-1.062-2.583-1.063-3.963 0-4.377 3.562-7.939 7.939-7.939h.028z" fill="#FFF"/><path d="M15.42 12.553c-.185-.092-1.096-.539-1.265-.601-.17-.061-.293-.092-.416.093-.123.184-.477.6-.585.723-.108.123-.215.139-.4.046-.185-.093-.781-.287-1.487-.914-.551-.49-1.169-.475-1.292-.536-.123-.062-.016-.279.16-.456.096-.096.185-.22.278-.328.093-.108.123-.185.185-.308.062-.124.031-.231-.015-.323-.046-.093-.416-1.001-.57-1.37-.149-.36-.303-.31-.416-.316-.108-.006-.231-.006-.354-.006-.123 0-.323.046-.492.231-.169.185-.646.63-.646 1.537 0 .907.661 1.783.754 1.906.092.123 1.3 1.983 3.15 2.779 1.85.796 1.85.53 2.535.496.685-.035 1.53-.625 1.745-1.229.215-.6.215-1.117.15-1.229-.065-.112-.234-.179-.419-.271z" fill="#FFF"/></svg>
+  </a>
+
+  <!-- Chatbot -->
+  <div class="chatbot-toggle" onclick="toggleChat()">💬 Ajuda</div>
+  <div class="chatbot-container" id="chatbot">
+    <div class="chat-header">
+      <h4>Assistente Patrícia Pattas</h4>
+      <span style="cursor:pointer;" onclick="toggleChat()">×</span>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="message bot-msg">Olá! Sou o assistente virtual. Como posso ajudar?</div>
+      <div class="chat-options">
+        <button class="chat-opt-btn" onclick="botReply('produtos')">Ver Produtos</button>
+        <button class="chat-opt-btn" onclick="botReply('agendar')">Agendar Make</button>
+        <button class="chat-opt-btn" onclick="botReply('pagamento')">Pagamentos</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <h1>Patrícia Pattas</h1>
+    <p>Vendas e serviços com sofisticação</p>
+  </header>
+
+  <nav>
+    <a href="#produtos">Produtos</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#maquiagem">Maquiagem</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
+  <!-- SEÇÃO PRODUTOS -->
+  <section id="produtos">
+    <h2>Produtos</h2>
+    <div id="lista-produtos" class="grid">
+      <div class="loading">Carregando produtos...</div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO SERVIÇOS -->
+  <section id="servicos">
+    <h2>Serviços</h2>
+    <div id="lista-servicos" class="grid">
+      <div class="loading">Carregando serviços...</div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO MAQUIAGEM (AGENDAMENTO DETALHADO) -->
+  <section id="maquiagem">
+    <h2>Maquiagem ao Domicílio</h2>
+    
+    <div class="grid">
+      <!-- Card Cidade -->
+      <div class="card">
+        <h3>Agendar – Cidade</h3>
+        <span class="price-display" id="preco-cidade">...</span>
+        <label>Data:</label>
+        <input type="date" id="dataLuanda">
+        <label>Hora:</label>
+        <select id="horaLuanda">
+          <option>09:00 - 10:00</option>
+          <option>12:00 - 13:00</option>
+          <option>14:00 - 15:00</option>
+          <option>16:00 - 17:00</option>
+        </select>
+        <button class="btn" onclick="fazerAgendamento('Cidade', 'dataLuanda', 'horaLuanda')">Agendar no WhatsApp</button>
+      </div>
+
+      <!-- Card Zonas -->
+      <div class="card">
+        <h3>Agendar – Zonas</h3>
+        <p style="font-size:0.9rem;">(Nova Vida, Talatona, Benfica, Kilamba)</p>
+        <span class="price-display" id="preco-zonas">...</span>
+        <label>Data:</label>
+        <input type="date" id="dataZona">
+        <label>Hora:</label>
+        <select id="horaZona">
+          <option>09:00 - 10:00</option>
+          <option>12:00 - 13:00</option>
+          <option>14:00 - 15:00</option>
+          <option>16:00 - 17:00</option>
+        </select>
+        <button class="btn" onclick="fazerAgendamento('Zonas', 'dataZona', 'horaZona')">Agendar no WhatsApp</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" style="text-align: center;">
+    <h2>Contacto</h2>
+    <p>WhatsApp: <strong>244 926 837 464</strong></p>
+    <p>Email: <strong>pattasvendas@gmail.com</strong></p>
+  </section>
+
+  <footer>
+    © 2025 Patrícia Pattas
+  </footer>
+
+  <script>
+    // DADOS DE BACKUP (Para funcionar sem servidor/fetch)
+    const DEFAULT_DATA = {
+      "whatsapp_global": "244926837464",
+      "politicas": {
+        "cancelamento": "Desmarcações devem ser feitas com no mínimo 24 horas de antecedência. Não efectuamos reembolsos por não comparência sem aviso prévio."
+      },
+      "pagamentos": {
+        "multicaixa": "9xxxxxxxxx (Solicite no WhatsApp)",
+        "iban": "AO06 0000 0000 0000 0000 0"
+      },
+      "precos_make": {
+        "cidade": "25.000 – 35.000 KZ",
+        "zonas": "40.000 KZ"
+      },
+      "produtos": [
+        {
+          "titulo": "Conjunto Crochê Praia",
+          "descricao": "Conjunto artesanal em crochê, ideal para usar na praia.",
+          "preco": "18.000 KZ",
+          "imagem": "https://scontent-cpt1-1.xx.fbcdn.net/v/t1.6435-9/171847438_1353815051640676_4439554293050690979_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeH8sC59_CH8LYrcIP0aGqXnZkoAuHaqG-pmSgC4dqob6g3qagrgPuL1IN-mPXcaepyEb3BPXdmfK-zcdeQpOUQQ&_nc_ohc=6ItXIX3tkCsQ7kNvwEjgZL-&_nc_oc=AdlTLV_g9vHJCn1oYxnHw2O9L_xzqt_2oft9dkkSDEaxhS_Drtz1TcDOcInrkDU4OUo08tjKnKaP7VYkR1sKe4-P&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=MYuAyTAwTAVvr5SVgGr_gQ&oh=00_AfrfI2oR5ZCBX8M5eFtevEwFu8bgnGLISOmFj7F8klih_g&oe=698A390D"
+        },
+        {
+          "titulo": "Conjuntos de saia e Calça",
+          "descricao": "Leve e estiloso em crochê.",
+          "preco": "30.000 KZ",
+          "imagem": "https://scontent-cpt1-1.xx.fbcdn.net/v/t39.30808-6/470870945_2269706376718201_1226928014039339194_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEJTyYp1a_Z0YxZS_yvIE1zycB9OyvKqErJwH07K8qoSn1r87GvFGSjs4zDOrfBzo-hPdlwp_MyfPwgtcnTnNKr&_nc_ohc=oYH6VWQr3iQQ7kNvwF_7LYw&_nc_oc=AdnN5pd1gf0Ry0UUZUEE8v87zLmXvz-6edZNNC-t66J_9dpxx2AIyiFlkN8H_ckzfPEwyrvYmrbxKbG4sXnH58Rc&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=TqTTHCafVGLEPPgBgGbVzA&oh=00_Afr07EA4JzjQZqKILdQNdI9SzvyO_XiwDpwpNvGiSi0O4Q&oe=69689B49"
+        }
+      ],
+      "servicos": [
+        {
+          "titulo": "Consultoria Comercial",
+          "descricao": "Organização e divulgação de produtos.",
+          "imagem": "" 
+        },
+        {
+          "titulo": "Distribuição Local",
+          "descricao": "Entregas rápidas em Angola.",
+          "imagem": "https://www.shutterstock.com/image-photo/under-bright-morning-sun-parcel-600nw-2674615239.jpg"
+        },
+        {
+          "titulo": "Maquiagem Profissional",
+          "descricao": "Beleza com qualidade e profissionalismo.\n\nMaquiagem no espaço: varia entre 20.000, 22.000, 25.000 e 35.000 KZ.\n\nPacote para damas (a partir de 5 pessoas): 16.000 KZ por pessoa.",
+          "imagem": "https://scontent-cpt1-1.xx.fbcdn.net/v/t51.75761-15/491415750_18058241234154897_6955716653653450962_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGIp-AkLGOs61fmNz4YPOEHbknabuyGAP1uSdpu7IYA_UWurKSyBK-BWbSAYPbJmoN4y3Ozi_VpnoizyKhAZrmh&_nc_ohc=3hP7FYH2ffQQ7kNvwHFzS4R&_nc_oc=Adn82YXL4CJTJt1kvis_MtIi4GcXDDkEF74C_xbOo18aURb2Bjy1zwQGeenqwWCUmyHw75YV7CTUnYORKdAcBuQV&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=mrbA_H5PmV5HIeuQDwFxBg&oh=00_AfoAWGZ_uD-Po2AWF8MMIHLSZOUHNdEDqgNa8WkjTBGsqw&oe=6968BD70"
+        }
+      ]
+    };
+
+    let globalData = {};
+
+    // 1. CARREGAR DADOS DO JSON
+    async function carregarSite() {
+      try {
+        // Tenta buscar o arquivo externo (funcionará no Netlify)
+        const resposta = await fetch('content/data.json');
+        
+        // Verifica se a resposta foi bem-sucedida
+        if (!resposta.ok) {
+          throw new Error("Arquivo não encontrado (usando dados locais)");
+        }
+
+        globalData = await resposta.json();
+      } catch (erro) {
+        // Se falhar (em preview ou erro de rede), usa os dados de backup
+        console.warn("Modo Offline/Preview ativado: Usando DEFAULT_DATA. Erro:", erro);
+        globalData = DEFAULT_DATA;
+      }
+        
+      const dados = globalData;
+
+      // Preencher Produtos
+      const containerProd = document.getElementById('lista-produtos');
+      containerProd.innerHTML = '';
+      if(dados.produtos && dados.produtos.length > 0) {
+        dados.produtos.forEach(prod => {
+          const msg = `Olá, quero comprar: ${prod.titulo}`;
+          const linkWa = `https://wa.me/${dados.whatsapp_global}?text=${encodeURIComponent(msg)}`;
+          containerProd.innerHTML += `
+            <div class="card">
+              <img src="${prod.imagem}" alt="${prod.titulo}" onerror="this.src='https://via.placeholder.com/300x450?text=Imagem+Indisponível'">
+              <h3>${prod.titulo}</h3>
+              <p>${prod.descricao}</p>
+              <strong style="display:block;margin:10px 0">${prod.preco}</strong>
+              <a href="${linkWa}" class="btn" target="_blank">Comprar</a>
+            </div>`;
+        });
+      } else {
+        containerProd.innerHTML = '<p>Nenhum produto disponível no momento.</p>';
+      }
+
+      // Preencher Serviços
+      const containerServ = document.getElementById('lista-servicos');
+      containerServ.innerHTML = '';
+      if(dados.servicos) {
+        dados.servicos.forEach(serv => {
+          // Só mostra imagem se houver URL válida
+          const imgTag = serv.imagem ? `<img src="${serv.imagem}" alt="${serv.titulo}" onerror="this.style.display='none'">` : '';
+          
+          containerServ.innerHTML += `
+            <div class="card">
+              ${imgTag}
+              <h3>${serv.titulo}</h3>
+              <p>${serv.descricao}</p>
+            </div>`;
+        });
+      }
+
+      // Preencher Preços e Infos
+      if(dados.precos_make) {
+        document.getElementById('preco-cidade').innerText = "Valor: " + dados.precos_make.cidade;
+        document.getElementById('preco-zonas').innerText = "Valor: " + dados.precos_make.zonas;
+      }
+      document.getElementById('wa-float-btn').href = `https://wa.me/${dados.whatsapp_global}`;
+      
+      // Preencher Gaveta Lateral
+      if(dados.politicas) document.getElementById('txt-politicas').innerText = dados.politicas.cancelamento;
+      if(dados.pagamentos) {
+        document.getElementById('txt-mcx').innerText = dados.pagamentos.multicaixa;
+        document.getElementById('txt-iban').innerText = dados.pagamentos.iban;
+      }
+    }
+
+    // 2. LÓGICA DO MENU
+    function toggleMenu() {
+      const drawer = document.getElementById('sideDrawer');
+      const backdrop = document.getElementById('backdrop');
+      const btn = document.querySelector('.menu-btn');
+      
+      drawer.classList.toggle('open');
+      backdrop.classList.toggle('active');
+      btn.innerHTML = drawer.classList.contains('open') ? '×' : '☰';
+    }
+
+    // 3. LÓGICA DO AGENDAMENTO ESPECÍFICO
+    function fazerAgendamento(tipo, idData, idHora) {
+      const data = document.getElementById(idData).value;
+      const hora = document.getElementById(idHora).value;
+      
+      if (!data) {
+        alert("Por favor, selecione uma data para o agendamento.");
+        return;
+      }
+
+      const wa = globalData.whatsapp_global || "244926837464";
+      const texto = `Olá, gostaria de agendar maquiagem para *${tipo}*.%0A📅 Data: ${data}%0A⏰ Hora: ${hora}`;
+      
+      window.open(`https://wa.me/${wa}?text=${texto}`, '_blank');
+    }
+
+    // 4. LÓGICA DO CHATBOT
+    function toggleChat() {
+      document.getElementById('chatbot').classList.toggle('active');
+    }
+
+    function botReply(opcao) {
+      const chatBody = document.getElementById('chatBody');
+      
+      // Mensagem do usuário
+      let userText = "";
+      if(opcao === 'produtos') userText = "Ver Produtos";
+      if(opcao === 'agendar') userText = "Agendar Maquiagem";
+      if(opcao === 'pagamento') userText = "Ver Pagamentos";
+      
+      chatBody.innerHTML += `<div class="message user-msg">${userText}</div>`;
+
+      // Resposta do Bot (Simples)
+      setTimeout(() => {
+        let botText = "";
+        if(opcao === 'produtos') botText = "Temos ótimas opções! Role para cima para ver a seção de Produtos.";
+        if(opcao === 'agendar') botText = "Para agendar, vá à seção 'Maquiagem', escolha a data e clique em Agendar.";
+        if(opcao === 'pagamento') botText = "Aceitamos Multicaixa e IBAN. Abra o Menu Principal (☰) para ver os dados.";
+
+        chatBody.innerHTML += `<div class="message bot-msg">${botText}</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }, 500);
+    }
+
+    // Netlify Identity Redirect
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+
+    // Iniciar
+    carregarSite();
+  </script>
+</body>
+</html>

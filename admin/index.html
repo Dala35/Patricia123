@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - Patrícia Pattas</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <!-- A MÁGICA: Impede o CMS de procurar o config.yml sozinho e causar erro -->
+  <script>window.CMS_MANUAL_INIT = true;</script>
+</head>
+<body>
+  <!-- Script do Decap CMS (antigo Netlify CMS) -->
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+
+  <script>
+    // --- CONFIGURAÇÃO MANUAL DO CMS ---
+    var config = {
+      backend: {
+        name: 'git-gateway',
+        branch: 'main', // Certifique-se que a branch no GitHub é 'main'
+      },
+      media_folder: 'uploads',
+      public_folder: '/uploads',
+      collections: [
+        {
+          name: 'conteudo',
+          label: 'Gerir Site',
+          files: [
+            {
+              name: 'dados',
+              label: 'Editar Todo o Conteúdo',
+              file: 'content/data.json', // O arquivo que será editado
+              fields: [
+                { label: 'WhatsApp Principal (Apenas números)', name: 'whatsapp_global', widget: 'string' },
+                
+                // Agrupamento de Configurações Gerais
+                {
+                  label: 'Políticas e Pagamentos',
+                  name: 'configs_gerais',
+                  widget: 'object',
+                  fields: [
+                    { label: 'Texto de Cancelamento', name: 'politicas.cancelamento', widget: 'text' },
+                    { label: 'IBAN', name: 'pagamentos.iban', widget: 'string' },
+                    { label: 'Ref. Multicaixa', name: 'pagamentos.multicaixa', widget: 'string' }
+                  ]
+                },
+
+                // Agrupamento de Preços
+                {
+                  label: 'Preços Maquiagem',
+                  name: 'precos_make',
+                  widget: 'object',
+                  fields: [
+                    { label: 'Preço Cidade', name: 'cidade', widget: 'string' },
+                    { label: 'Preço Zonas', name: 'zonas', widget: 'string' }
+                  ]
+                },
+
+                // Lista de Produtos
+                {
+                  label: 'Produtos',
+                  name: 'produtos',
+                  widget: 'list',
+                  fields: [
+                    { label: 'Nome do Produto', name: 'titulo', widget: 'string' },
+                    { label: 'Descrição', name: 'descricao', widget: 'text' },
+                    { label: 'Preço', name: 'preco', widget: 'string' },
+                    { label: 'Imagem', name: 'imagem', widget: 'image' }
+                  ]
+                },
+
+                // Lista de Serviços
+                {
+                  label: 'Serviços',
+                  name: 'servicos',
+                  widget: 'list',
+                  fields: [
+                    { label: 'Nome do Serviço', name: 'titulo', widget: 'string' },
+                    { label: 'Descrição', name: 'descricao', widget: 'text' },
+                    { label: 'Imagem', name: 'imagem', widget: 'image' }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    // Agora iniciamos manualmente (sem erros de busca automática)
+    CMS.init({ config: config });
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "whatsapp_global": "244926837464",
+  "politicas": {
+    "cancelamento": "Desmarcações devem ser feitas com no mínimo 24 horas de antecedência. Não efectuamos reembolsos por não comparência sem aviso prévio."
+  },
+  "pagamentos": {
+    "multicaixa": "9xxxxxxxxx (Solicite no WhatsApp)",
+    "iban": "AO06 0000 0000 0000 0000 0"
+  },
+  "precos_make": {
+    "cidade": "25.000 – 35.000 KZ",
+    "zonas": "40.000 KZ"
+  },
+  "produtos": [
+    {
+      "titulo": "Conjunto Crochê Praia",
+      "descricao": "Conjunto artesanal em crochê, ideal para usar na praia.",
+      "preco": "18.000 KZ",
+      "imagem": "https://scontent-cpt1-1.xx.fbcdn.net/v/t1.6435-9/171847438_1353815051640676_4439554293050690979_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeH8sC59_CH8LYrcIP0aGqXnZkoAuHaqG-pmSgC4dqob6g3qagrgPuL1IN-mPXcaepyEb3BPXdmfK-zcdeQpOUQQ&_nc_ohc=6ItXIX3tkCsQ7kNvwEjgZL-&_nc_oc=AdlTLV_g9vHJCn1oYxnHw2O9L_xzqt_2oft9dkkSDEaxhS_Drtz1TcDOcInrkDU4OUo08tjKnKaP7VYkR1sKe4-P&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=MYuAyTAwTAVvr5SVgGr_gQ&oh=00_AfrfI2oR5ZCBX8M5eFtevEwFu8bgnGLISOmFj7F8klih_g&oe=698A390D"
+    },
+    {
+      "titulo": "Conjuntos de saia e Calça",
+      "descricao": "Leve e estiloso em crochê.",
+      "preco": "30.000 KZ",
+      "imagem": "https://scontent-cpt1-1.xx.fbcdn.net/v/t39.30808-6/470870945_2269706376718201_1226928014039339194_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEJTyYp1a_Z0YxZS_yvIE1zycB9OyvKqErJwH07K8qoSn1r87GvFGSjs4zDOrfBzo-hPdlwp_MyfPwgtcnTnNKr&_nc_ohc=oYH6VWQr3iQQ7kNvwF_7LYw&_nc_oc=AdnN5pd1gf0Ry0UUZUEE8v87zLmXvz-6edZNNC-t66J_9dpxx2AIyiFlkN8H_ckzfPEwyrvYmrbxKbG4sXnH58Rc&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=TqTTHCafVGLEPPgBgGbVzA&oh=00_Afr07EA4JzjQZqKILdQNdI9SzvyO_XiwDpwpNvGiSi0O4Q&oe=69689B49"
+    }
+  ],
+  "servicos": [
+    {
+      "titulo": "Consultoria Comercial",
+      "descricao": "Organização e divulgação de produtos.",
+      "imagem": ""
+    },
+    {
+      "titulo": "Distribuição Local",
+      "descricao": "Entregas rápidas em Angola.",
+      "imagem": "https://www.shutterstock.com/image-photo/under-bright-morning-sun-parcel-600nw-2674615239.jpg"
+    },
+    {
+      "titulo": "Maquiagem Profissional",
+      "descricao": "Beleza com qualidade e profissionalismo.\n\nMaquiagem no espaço: varia entre 20.000, 22.000, 25.000 e 35.000 KZ.\n\nPacote para damas (a partir de 5 pessoas): 16.000 KZ por pessoa.",
+      "imagem": "https://scontent-cpt1-1.xx.fbcdn.net/v/t51.75761-15/491415750_18058241234154897_6955716653653450962_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGIp-AkLGOs61fmNz4YPOEHbknabuyGAP1uSdpu7IYA_UWurKSyBK-BWbSAYPbJmoN4y3Ozi_VpnoizyKhAZrmh&_nc_ohc=3hP7FYH2ffQQ7kNvwHFzS4R&_nc_oc=Adn82YXL4CJTJt1kvis_MtIi4GcXDDkEF74C_xbOo18aURb2Bjy1zwQGeenqwWCUmyHw75YV7CTUnYORKdAcBuQV&_nc_zt=23&_nc_ht=scontent-cpt1-1.xx&_nc_gid=mrbA_H5PmV5HIeuQDwFxBg&oh=00_AfoAWGZ_uD-Po2AWF8MMIHLSZOUHNdEDqgNa8WkjTBGsqw&oe=6968BD70"
+    }
+  ]
+}
